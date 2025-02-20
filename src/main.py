@@ -7,7 +7,7 @@ import gc
 BUTTON = Pin(15, Pin.IN,Pin.PULL_UP)
 PWM = PWM(Pin(12))
 PWM.freq(1000)
-current_duty_cycle = 0
+
 
 stop_animation = False
 animation_index = 0
@@ -20,12 +20,10 @@ def set_brightness(duty_cycle, sleep_time_s)->bool:
 
 
 def set_duty_cycle(duty_cycle):
-    global current_duty_cycle
     if duty_cycle > 65535:
         raise ValueError(f"Duty cycle must be less than 65535, current: {duty_cycle}")
     if duty_cycle < 0:
         raise ValueError(f"Duty cycle must be bigger than 0, current: {duty_cycle}")
-    current_duty_cycle = duty_cycle
     PWM.duty_u16(duty_cycle)
 
 def delay(sleep_time_s) -> bool:
@@ -55,7 +53,7 @@ def simply_on():
     set_duty_cycle(65535)
     delay(10)
 
-def gradient_color_shift(animation_steps:List[int], animation_duration_s:float):
+def gradient_color_shift(animation_steps, animation_duration_s):
      for duty in animation_steps:
         if set_brightness(duty, animation_duration_s / len(animation_steps)):
             return
@@ -118,7 +116,7 @@ def stabilization2(offset = 0):
 
     
 @animation
-def small_candle(min_brightness = 0.2, max_brightness = 0.9, min_animation_duration_s = 0.5, max_animation_duration_s = 6):
+def small_candle():
    
     for i in range( random.randint(4,7)):
         stabilization()
@@ -128,7 +126,7 @@ def small_candle(min_brightness = 0.2, max_brightness = 0.9, min_animation_durat
 
   
 @animation
-def big_candle(min_brightness = 0.2, max_brightness = 0.9, min_animation_duration_s = 0.5, max_animation_duration_s = 6):
+def big_candle():
    
     for i in range( random.randint(4,7)):
         stabilization()
@@ -136,7 +134,8 @@ def big_candle(min_brightness = 0.2, max_brightness = 0.9, min_animation_duratio
     for i in range( random.randint(4,8)):
         quick_bling()
     
-    stabilization()
+    for i in range( random.randint(4,7)):
+        stabilization()
     
     if random.random() > 0.5:
         for i in range( random.randint(8,16)):
