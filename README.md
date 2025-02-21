@@ -4,10 +4,10 @@ Very simple animated desk lamp based on RPI Pico, that was made in a hurry...
 
 Prepared animations include (in order):
 1. simply_on - lamp shines the brightest light possible
-2. simply_off - light is turned off
-3. breeze - slowly oscillates between dim and bright light 
-4. candle - emulates flame of a candle
-
+2. breeze - slowly oscillates between dim and bright light 
+3. small_candle - emulates dynamic flame of a candle
+4. big_candle - emulates more static, slow flame of a candle
+5. simply_off - light is turned off
 
 # Set up guide
 
