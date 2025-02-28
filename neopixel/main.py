@@ -1,10 +1,10 @@
 from neopixel import Neopixel
 import utime
-import random
 from machine import Pin
 import _thread
 import gc
 import math
+import random
 
 
 class Color:
@@ -85,24 +85,38 @@ class LedStrip:
         self._led_strip.fill(Color.red().to_tuple())
         self._led_strip.show()
 
-    def fill(self, color: Color):
+    def fill(self, color: Color, show: bool = True):
         self._led_strip.fill(color.to_tuple())
-        self._led_strip.show()
+        if show:
+            self._led_strip.show()
 
-    def set_pixels(self, indexes, color: Color):
+    def fill_spiral(self, spiral: int, color: Color, show: bool = True):
+        assert 0 <= spiral <= 3
+
+        for i in range(41):
+            if i % 3 == spiral:
+                self._led_strip.set_pixel(i, color.to_tuple())
+        if show:
+            self._led_strip.show()
+
+    def set_pixels(self, indexes, color: Color, show: bool = True):
         for index in indexes:
             self._led_strip.set_pixel(index, color.to_tuple())
-        self._led_strip.show()
+        if show:
+            self._led_strip.show()
 
-    def set_pixel(self, index: int, color: Color):
+    def set_pixel(self, index: int, color: Color, show: bool = True):
         self._led_strip.set_pixel(index, color.to_tuple())
+        if show:
+            self._led_strip.show()
 
     def show(self):
         self._led_strip.show()
 
-    def brightness(self, brightness: int):
+    def brightness(self, brightness: int, show: bool = True):
         self._led_strip.brightness(brightness)
-        self._led_strip.show()
+        if show:
+            self._led_strip.show()
 
     @staticmethod
     def size():
@@ -115,7 +129,6 @@ LED_STRIP = LedStrip()
 def animation(f):
     animations.append(f)
     return f
-
 
 def rainbow(id: int, max_id: int, brightness: int = 255, third_color: int = 0) -> Color:
 
@@ -164,28 +177,41 @@ def rainbow(id: int, max_id: int, brightness: int = 255, third_color: int = 0) -
     return Color.red()
 
 
-
-def candle_temp_to_led_state(float_temp: float):
-    assert 0 <= float_temp <= 1
-    
-
-@animation
-def small_candle():
-
-    for _ in range(random.randint(4, 7)):
-        stable_oscillation()  # candle is "flowing" from left to right in a semi stable way
-
-    for _ in range(random.randint(4, 8)):
-        quick_bling()  # flame is flickering quickly and dynamically
-
-
 @animation
 def simply_on():
     global stop_animation
-    LED_STRIP.fill(Color(247, 129, 17))
+    LED_STRIP.fill(color=Color(0, 0, 0), show=False)
+    LED_STRIP.fill_spiral(0, Color(235, 168, 52), show=False)
+    LED_STRIP.fill_spiral(1, Color(235, 113, 52), show=False)
+    LED_STRIP.fill_spiral(2, Color(235, 201, 52))
+
     if delay(1):
         stop_animation = False
         return
+
+
+@animation
+def animated_spiral_rainbow():
+    global stop_animation
+
+    colors = [
+        rainbow(i, LED_STRIP.size() * 3, third_color=100)
+        for i in range(LED_STRIP.size() * 3)
+    ]
+
+    for i in range(LED_STRIP.size() * 3):
+        LED_STRIP.fill(color=Color(0, 0, 0), show=False)
+        LED_STRIP.fill_spiral(0, colors[i], show=False)
+        LED_STRIP.fill_spiral(
+            1, colors[(i + len(colors) // 3) % len(colors)], show=False
+        )
+        LED_STRIP.fill_spiral(
+            2, colors[(i + (len(colors) // 3) * 2) % len(colors)], show=False
+        )
+        LED_STRIP.show()
+        if delay(0.1):
+            stop_animation = False
+            return
 
 
 @animation
