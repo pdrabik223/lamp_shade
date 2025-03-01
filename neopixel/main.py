@@ -20,12 +20,29 @@ def animation(f):
 
 
 @animation
+def candle():
+    LED_STRIP.brightness(42)
+    candle_red = Color(255,0,0)
+    candle_orange = Color(200, 80, 0)
+    candle_yellow =  Color(180, 100, 0)
+    
+    LED_STRIP.fill(color=Color(0, 0, 0), show=False)
+    LED_STRIP.set_pixels(range(10), candle_red, brightness=255, show=False)
+    LED_STRIP.set_pixels(range(10, 22), candle_orange, show=False)
+    LED_STRIP.set_pixels(range(22, 41), candle_yellow, brightness=60)
+    
+    if delay(1, config):
+        config.stop_animation = False
+        return
+
+
+@animation
 def simply_on():
 
     LED_STRIP.fill(color=Color(0, 0, 0), show=False)
-    LED_STRIP.fill_spiral(0, Color(235, 168, 52), show=False)
-    LED_STRIP.fill_spiral(1, Color(235, 113, 52), show=False)
-    LED_STRIP.fill_spiral(2, Color(235, 201, 52))
+    LED_STRIP.fill_spiral(0, Color(235/2, 168/2, 52/2), show=False)
+    LED_STRIP.fill_spiral(1, Color(235/2, 113/2, 52/2), show=False)
+    LED_STRIP.fill_spiral(2, Color(235/2, 201/2, 52/2))
 
     if delay(1, config):
         config.stop_animation = False

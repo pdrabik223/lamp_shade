@@ -75,23 +75,29 @@ class LedStrip:
         if show:
             self._led_strip.show()
 
-    def fill_spiral(self, spiral: int, color: Color, show: bool = True):
+    def fill_spiral(
+        self, spiral: int, color: Color, brightness: int = 100, show: bool = True
+    ):
         assert 0 <= spiral <= 3
 
         for i in range(41):
             if i % 3 == spiral:
-                self._led_strip.set_pixel(i, color.to_tuple())
+                self._led_strip.set_pixel(i, color.to_tuple(), how_bright=brightness)
         if show:
             self._led_strip.show()
 
-    def set_pixels(self, indexes, color: Color, show: bool = True):
+    def set_pixels(
+        self, indexes, color: Color, brightness: int = 100, show: bool = True
+    ):
         for index in indexes:
-            self._led_strip.set_pixel(index, color.to_tuple())
+            self._led_strip.set_pixel(index, color.to_tuple(), how_bright=brightness)
         if show:
             self._led_strip.show()
 
-    def set_pixel(self, index: int, color: Color, show: bool = True):
-        self._led_strip.set_pixel(index, color.to_tuple())
+    def set_pixel(
+        self, index: int, color: Color, brightness: int = 100, show: bool = True
+    ):
+        self._led_strip.set_pixel(index, color.to_tuple(), how_bright=brightness)
         if show:
             self._led_strip.show()
 
