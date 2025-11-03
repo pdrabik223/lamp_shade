@@ -27,9 +27,9 @@ def candle():
     candle_yellow =  Color(180, 100, 0)
     
     LED_STRIP.fill(color=Color(0, 0, 0), show=False)
-    LED_STRIP.set_pixels(range(10), candle_red, brightness=255, show=False)
-    LED_STRIP.set_pixels(range(10, 22), candle_orange, show=False)
-    LED_STRIP.set_pixels(range(22, 41), candle_yellow, brightness=60)
+    LED_STRIP.set_pixels(range(13), candle_red, brightness=255, show=False)
+    LED_STRIP.set_pixels(range(13, 26), candle_orange, show=False)
+    LED_STRIP.set_pixels(range(26, 41), candle_yellow, brightness=60)
     
     if delay(1, config):
         config.stop_animation = False
@@ -48,6 +48,15 @@ def simply_on():
         config.stop_animation = False
         return
 
+
+@animation
+def simply_off():
+
+    LED_STRIP.fill(color=Color(0, 0, 0))
+
+    if delay(1, config):
+        config.stop_animation = False
+        return
 
 @animation
 def animated_spiral_rainbow():
